@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custon ignores for run-metrics-connect
+api_keys.yaml
