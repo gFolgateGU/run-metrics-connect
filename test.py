@@ -1,12 +1,18 @@
 import requests
 
 import unit_conversions as uc
-from api_key_parser import ApiKeyParser
+from api_key_mgr import ApiKeyMgr
+from strava_api_key_service import StravaApiKeyService
 
 # Load in API Keys for Strava API
 file_name = 'api_keys.yaml'
-api_key_parser = ApiKeyParser(file_name)
+api_key_parser = ApiKeyMgr(file_name)
 api_keys = api_key_parser.get_data_for_source("strava")
+print(api_keys)
+
+# Refreshing API Keys
+strava_api_key_service = StravaApiKeyService(api_key_parser)
+strava_api_key_service.refresh_api_keys()
 
 # Build URI String to Get Activity Data from Personal Account
 base_uri = 'https://www.strava.com/api/v3/'
@@ -22,10 +28,14 @@ response = requests.get(uri)
 status = response.status_code
 data = response.json()
 
-# Most recent run data.
-run_length_meters = data[0]['distance']
-run_length_miles = run_length_meters * uc.METERS_TO_MILES
+print(status)
+print(data)
 
-print(f'HTTP Status: {status}')
-print(f'Most recent run length (miles): {run_length_miles}')
+# Most recent run data.
+#run_length_meters = data[0]['distance']
+#run_length_miles = run_length_meters * uc.METERS_TO_MILES
+
+#print(data)
+#print(f'HTTP Status: {status}')
+#print(f'Most recent run length (miles): {run_length_miles}')
 

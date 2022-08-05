@@ -13,7 +13,7 @@ class ApiKeyData:
         self.client_id = client_id
         self.client_secret = client_secret
 
-class ApiKeyParser:
+class ApiKeyMgr:
 
     def __init__(self, file_name):
         self.file_name = file_name
@@ -37,3 +37,16 @@ class ApiKeyParser:
             return ApiKeyData(acs_tkn, rfrsh_tkn, client_id, client_secret)
         else:
             return None
+
+    def store_data_for_source(self, source, api_key_data):
+        new_data_dict = {}
+        new_data_dict[source] = {}
+        new_data_dict[source]['client_id'] = api_key_data.client_id
+        new_data_dict[source]['client_secret'] = api_key_data.client_secret
+        new_data_dict[source]['access_token'] = api_key_data.access_token
+        new_data_dict[source]['refresh_token'] = api_key_data.refresh_token
+
+        with open(self.file_name, "w") as file:
+            print("Saving Refreshed API Keys... ")
+            yaml.dump(new_data_dict, file)
+            print('Done!')
