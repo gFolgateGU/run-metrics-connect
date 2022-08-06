@@ -1,4 +1,4 @@
-from api_service_base import ApiServiceBase
+from api_services.api_service_base import ApiServiceBase
 
 class StravaApiKeyService(ApiServiceBase):
     def __init__(self, api_key_mgr):
